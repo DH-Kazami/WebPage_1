@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-font-size="medium">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HTML炼金工坊 —— 零代码网页创作工具" />
+  <title>HTML炼金工坊 · 零代码网页创作</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232f6bff'/%3E%3Cpath d='M24 20 12 32l12 12M40 20l12 12-12 12' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      const savedFontSize = localStorage.getItem('lanmo-ui-font-size');
+      if (['small', 'medium', 'large'].includes(savedFontSize)) {
+        document.documentElement.dataset.fontSize = savedFontSize;
+      }
+    } catch (error) {
+      /* Keep the default medium size when storage is unavailable. */
+    }
+  </script>
+</head>
+<body>
+  <!-- ===================== SVG 图标库 ===================== -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="svg-sprite" aria-hidden="true">
+    <defs>
+      <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M9 9v11"/></symbol>
+      <symbol id="i-wand" viewBox="0 0 24 24"><path d="m4 20 10.5-10.5M14 4l1-2 1 2 2 1-2 1-1 2-1-2-2-1 2-1ZM19 11l.7-1.6L21 9l-1.3-.5L19 7l-.7 1.5L17 9l1.3.4L19 11Z"/></symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14"/></symbol>
+      <symbol id="i-undo" viewBox="0 0 24 24"><path d="m9 14-5-5 5-5M4 9h11a5 5 0 0 1 0 10h-3"/></symbol>
+      <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5m5 5H9a5 5 0 0 0 0 10h3"/></symbol>
+      <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.5 2.5 0 1 1 4.1 2c-.9.7-1.6 1.2-1.6 2.5"/><path d="M12 17.2h.01"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></symbol>
+      <symbol id="i-heading" viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M6 12h12"/></symbol>
+      <symbol id="i-paragraph" viewBox="0 0 24 24"><path d="M4 6h16M4 11h16M4 16h10M4 21h7"/></symbol>
+      <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 15-5-5L5 20"/></symbol>
+      <symbol id="i-button" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="4"/><path d="M8 12h8"/></symbol>
+      <symbol id="i-divider" viewBox="0 0 24 24"><path d="M3 12h18M7 7h10M7 17h10"/></symbol>
+      <symbol id="i-badge" viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="8.1" cy="8.1" r="1.2"/></symbol>
+      <symbol id="i-link" viewBox="0 0 24 24"><path d="m10 14 4-4"/><path d="M7.5 16.5 5 19a3.5 3.5 0 0 1-5-5l3-3a3.5 3.5 0 0 1 5 0"/><path d="m16.5 7.5 2.5-2.5a3.5 3.5 0 0 1 5 5l-3 3a3.5 3.5 0 0 1-5 0" transform="translate(-1 0)"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></symbol>
+      <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 9v11M15 9v11"/></symbol>
+      <symbol id="i-audio" viewBox="0 0 24 24"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></symbol>
+      <symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3V9Z"/></symbol>
+      <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 20h16"/></symbol>
+      <symbol id="i-form" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 8h8M8 12h8M8 16h4"/></symbol>
+      <symbol id="i-input" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2.5"/><path d="M7 10v4"/></symbol>
+      <symbol id="i-textarea" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 9h10M7 13h7"/></symbol>
+      <symbol id="i-select" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="m15.5 10.5 2 2 2-2"/></symbol>
+      <symbol id="i-checkbox" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m7.5 12 3 3 6-6"/></symbol>
+      <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 14h8M8 17h5"/></symbol>
+      <symbol id="i-quote" viewBox="0 0 24 24"><path d="M9 8H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3V9a4 4 0 0 0-4-4M21 8h-4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3V9a4 4 0 0 0-4-4"/></symbol>
+      <symbol id="i-tip" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.2 11.1c.7.5 1.2 1.2 1.2 2h4c0-.8.5-1.5 1.2-2A6 6 0 0 0 12 3Z"/></symbol>
+      <symbol id="i-glow" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+      <symbol id="i-sticker" viewBox="0 0 24 24"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><circle cx="6" cy="6" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="18" cy="6" r="1"/><circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/><circle cx="6" cy="18" r="1"/><circle cx="12" cy="18" r="1"/><circle cx="18" cy="18" r="1"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 15H6L5 6M10 11v6M14 11v6"/></symbol>
+      <symbol id="i-fit" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 12l9 5 9-5M3 16l9 5 9-5"/></symbol>
+      <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5m-7 7 7-7 7 7"/></symbol>
+      <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14m-7-7 7 7 7-7"/></symbol>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+      <symbol id="i-clone" viewBox="0 0 24 24"><rect x="4" y="4" width="12" height="12" rx="2"/><path d="M8 20h10a2 2 0 0 0 2-2V8"/></symbol>
+      <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0 0 18h1.2a2.3 2.3 0 0 0 1.4-4.1 1.8 1.8 0 0 1 1.1-3.2H18a3.5 3.5 0 0 0 3.5-3.5C21.5 5.8 17.3 3 12 3Z"/><circle cx="7.5" cy="10" r="1"/><circle cx="10" cy="6.5" r="1"/><circle cx="15" cy="7.5" r="1"/></symbol>
+      <symbol id="i-type" viewBox="0 0 24 24"><path d="M4 6V4h16v2M12 4v16M9 20h6"/></symbol>
+      <symbol id="i-radius" viewBox="0 0 24 24"><path d="M5 19V9a4 4 0 0 1 4-4h10"/><path d="M5 19h1"/></symbol>
+      <symbol id="i-shadow" viewBox="0 0 24 24"><rect x="8" y="4" width="12" height="12" rx="2"/><path d="M5 8v8a3 3 0 0 0 3 3h8"/></symbol>
+      <symbol id="i-color" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></symbol>
+      <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M4 6h16M4 10h10M4 14h16M4 18h8"/></symbol>
+      <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M4 6h16M7 10h10M4 14h16M8 18h8"/></symbol>
+      <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M4 6h16M10 10h10M4 14h16M12 18h8"/></symbol>
+      <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h12l3 3v15H4V4a1 1 0 0 1 1-1Z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+      <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M13 4l-2 16"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/></symbol>
+      <symbol id="i-desktop" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+      <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+      <symbol id="i-drag" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/></symbol>
+      <symbol id="i-pointer" viewBox="0 0 24 24"><path d="m5 3 14 7-6 2-2 6-6-15Z"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 9-12h-7l1-8Z"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="app-shell">
+    <!-- ===================== 顶部菜单栏 ===================== -->
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="炼金工坊首页">
+        <span class="brand-mark"><svg class="icon"><use href="#i-code"/></svg></span>
+        <span class="brand-copy">
+          <strong>HTML炼金工坊</strong>
+          <small>零代码网页创作</small>
+        </span>
+      </a>
+
+      <nav class="mode-nav" aria-label="功能切换">
+        <button class="mode-tab is-active" data-mode="build" type="button">
+          <svg class="icon"><use href="#i-layout"/></svg>
+          <span>页面编辑</span>
+          <em>HTML</em>
+        </button>
+        <button class="mode-tab" data-mode="css" type="button">
+          <svg class="icon"><use href="#i-wand"/></svg>
+          <span>CSS 优化</span>
+          <em>DESIGN</em>
+        </button>
+      </nav>
+
+      <div class="topbar-actions">
+        <div class="save-status" id="saveStatus" title="作品自动保存在当前浏览器">
+          <span class="save-dot"></span>
+          <span id="saveText">已自动保存</span>
+        </div>
+        <div class="ui-font-switch" id="uiFontSwitch" role="group" aria-label="界面字号，当前中号" title="切换界面字号">
+          <span class="ui-font-label" title="界面字号">
+            <svg class="icon"><use href="#i-type"/></svg>
+            <span>字号</span>
+          </span>
+          <button class="ui-font-btn" type="button" data-ui-font="small" aria-pressed="false" title="小号字体">小</button>
+          <button class="ui-font-btn is-active" type="button" data-ui-font="medium" aria-pressed="true" title="中号字体">中</button>
+          <button class="ui-font-btn" type="button" data-ui-font="large" aria-pressed="false" title="大号字体">大</button>
+        </div>
+        <div class="history-actions">
+          <button class="icon-button" id="undoBtn" type="button" title="撤销 (Ctrl+Z)" aria-label="撤销" disabled>
+            <svg class="icon"><use href="#i-undo"/></svg>
+          </button>
+          <button class="icon-button" id="redoBtn" type="button" title="重做 (Ctrl+Shift+Z)" aria-label="重做" disabled>
+            <svg class="icon"><use href="#i-redo"/></svg>
+          </button>
+        </div>
+        <button class="btn btn-quiet help-btn" id="helpBtn" type="button">
+          <svg class="icon"><use href="#i-help"/></svg>
+          <span>创作指南</span>
+        </button>
+        <button class="btn btn-quiet import-btn" id="importBtn" type="button" title="导入单个 HTML 文件">
+          <svg class="icon"><use href="#i-upload"/></svg>
+          <span>导入</span>
+        </button>
+        <button class="btn btn-outline" id="previewBtn" type="button">
+          <svg class="icon"><use href="#i-eye"/></svg>
+          <span>预览</span>
+        </button>
+        <button class="btn btn-primary" id="exportBtn" type="button">
+          <svg class="icon"><use href="#i-download"/></svg>
+          <span>导出作品</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===================== 工作区 ===================== -->
+    <main class="workspace">
+      <!-- 左侧组件 / 美化面板 -->
+      <aside class="panel library-panel" aria-label="组件库">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow" id="libraryEyebrow">COMPONENTS</span>
+            <h2 id="libraryTitle">组件库</h2>
+          </div>
+          <button class="round-help" id="libraryHelpBtn" type="button" aria-label="查看组件使用帮助">
+            <svg class="icon"><use href="#i-info"/></svg>
+          </button>
+        </div>
+
+        <div class="library-view" id="buildLibrary">
+          <label class="search-field">
+            <svg class="icon"><use href="#i-search"/></svg>
+            <input id="componentSearch" type="search" placeholder="搜索组件…" autocomplete="off" />
+            <kbd>/</kbd>
+          </label>
+
+          <div class="category-tabs" id="categoryTabs" role="tablist" aria-label="组件分类">
+            <button class="category-tab is-active" data-category="basic" role="tab" aria-selected="true" type="button">基础</button>
+            <button class="category-tab" data-category="form" role="tab" aria-selected="false" type="button">表单</button>
+            <button class="category-tab" data-category="layout" role="tab" aria-selected="false" type="button">版式</button>
+            <button class="category-tab" data-category="media" role="tab" aria-selected="false" type="button">媒体</button>
+            <button class="category-tab" data-category="decor" role="tab" aria-selected="false" type="button">装饰</button>
+          </div>
+
+          <div class="component-grid" id="componentGrid" aria-live="polite"></div>
+
+          <div class="library-tip">
+            <span class="library-tip-icon"><svg class="icon"><use href="#i-drag"/></svg></span>
+            <p><strong>拖拽</strong>组件到画板，或<strong>点击</strong>快速添加</p>
+          </div>
+        </div>
+
+        <div class="library-view css-library" id="cssLibrary" hidden>
+          <p class="css-intro">用更少的调整，获得更统一的视觉效果。所有改动会立即同步到画板与 CSS。</p>
+
+          <div class="control-section">
+            <div class="section-title"><span><svg class="icon"><use href="#i-palette"/></svg>风格主题</span><small>THEME</small></div>
+            <div class="theme-grid" id="themeGrid"></div>
+          </div>
+
+          <div class="control-section">
+            <div class="section-title"><span><svg class="icon"><use href="#i-color"/></svg>品牌色</span><small>ACCENT</small></div>
+            <div class="swatch-row" id="accentSwatches"></div>
+          </div>
+
+          <div class="control-section">
+            <div class="section-title"><span><svg class="icon"><use href="#i-radius"/></svg>统一圆角</span><output id="radiusValue">16 px</output></div>
+            <input class="range-input" id="radiusRange" type="range" min="0" max="28" step="2" value="16" />
+            <div class="range-scale"><span>直角</span><span>柔和</span></div>
+          </div>
+
+          <div class="control-section">
+            <div class="section-title"><span><svg class="icon"><use href="#i-shadow"/></svg>卡片阴影</span><output id="shadowValue">开启</output></div>
+            <button class="toggle-row" id="shadowToggle" type="button" role="switch" aria-checked="true">
+              <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              <span class="toggle-copy"><strong>柔和投影</strong><small>让内容更有层次</small></span>
+            </button>
+          </div>
+
+          <div class="css-tip">
+            <svg class="icon"><use href="#i-bolt"/></svg>
+            <p>小技巧：全页只用 <strong>1 个品牌色</strong> 和 <strong>1 套圆角</strong>，页面会更专业。</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 中间画板 -->
+      <section class="stage-area" aria-label="网页画板">
+        <div class="stage-toolbar">
+          <div class="stage-title">
+            <span class="live-dot"></span>
+            <span id="stageLabel">我的第一个网页</span>
+            <span class="mode-pill" id="stageModePill">编辑模式</span>
+          </div>
+          <div class="stage-actions">
+            <span class="canvas-size"><svg class="icon"><use href="#i-layout"/></svg>900 × 600</span>
+            <button class="tool-button is-active" id="gridBtn" type="button" aria-pressed="true" title="显示/隐藏网格">
+              <svg class="icon"><use href="#i-grid"/></svg><span>网格</span>
+            </button>
+            <button class="tool-button" id="fitBtn" type="button" title="画板适应窗口">
+              <svg class="icon"><use href="#i-fit"/></svg><span>适应</span>
+            </button>
+            <button class="tool-button danger" id="clearBtn" type="button" title="清空画板">
+              <svg class="icon"><use href="#i-trash"/></svg><span>清空</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="canvas-viewport" id="canvasViewport">
+          <div class="artboard-frame" id="artboardFrame">
+            <div class="browser-bar">
+              <span class="browser-dots"><i></i><i></i><i></i></span>
+              <span class="browser-address">
+                <svg class="icon"><use href="#i-lock"/></svg>
+                <span id="browserTitle">我的第一个网页</span>
+              </span>
+              <span class="zoom-label" id="zoomLabel">82%</span>
+            </div>
+            <div class="artboard-viewport" id="artboardViewport">
+              <div class="artboard" id="artboard" tabindex="0" aria-label="拖拽组件到这里进行创作">
+                <div class="artboard-grid" id="artboardGrid"></div>
+                <div class="canvas-empty" id="canvasEmpty">
+                  <div class="empty-illustration">
+                    <span class="empty-orbit orbit-a"></span>
+                    <span class="empty-orbit orbit-b"></span>
+                    <span class="empty-icon"><svg class="icon"><use href="#i-plus"/></svg></span>
+                  </div>
+                  <h3>从左侧开始你的创作</h3>
+                  <p>拖拽组件到这里，或点击组件快速添加</p>
+                </div>
+                <div class="selection-tools" id="selectionTools" hidden>
+                  <span class="selection-name" id="selectionName">标题</span>
+                  <span class="selection-divider"></span>
+                  <button type="button" data-selection-action="duplicate" title="复制 (Ctrl+D)"><svg class="icon"><use href="#i-clone"/></svg></button>
+                  <button type="button" data-selection-action="front" title="置于顶层"><svg class="icon"><use href="#i-arrow-up"/></svg></button>
+                  <button type="button" data-selection-action="delete" title="删除 (Delete)" class="danger"><svg class="icon"><use href="#i-trash"/></svg></button>
+                </div>
+                <div class="drop-overlay" id="dropOverlay">
+                  <div class="drop-card">
+                    <span><svg class="icon"><use href="#i-plus"/></svg></span>
+                    <strong>松开放置组件</strong>
+                    <small>组件会停在当前指针对应的位置</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-footer">
+          <span class="stage-hint"><kbd>拖拽</kbd> 添加组件 · <kbd>方向键</kbd> 微调位置 · <kbd>Delete</kbd> 删除</span>
+          <span class="stage-note" id="stageNote"><svg class="icon"><use href="#i-save"/></svg>自动保存到本地</span>
+        </div>
+      </section>
+
+      <!-- 右侧属性 + 代码 -->
+      <aside class="right-column">
+        <section class="panel inspector-panel" aria-label="参数面板">
+          <div class="panel-heading inspector-heading">
+            <div>
+              <span class="eyebrow" id="inspectorEyebrow">INSPECTOR</span>
+              <h2 id="inspectorTitle">参数调整</h2>
+            </div>
+            <span class="selection-chip" id="selectionChip" hidden>标题</span>
+          </div>
+          <div class="inspector-body" id="inspectorBody"></div>
+        </section>
+
+        <section class="panel code-panel" aria-label="代码面板">
+          <div class="panel-heading code-heading">
+            <div>
+              <span class="eyebrow" id="codeEyebrow">LIVE CODE</span>
+              <h2 id="codeTitle">实时代码</h2>
+            </div>
+            <div class="code-actions">
+              <span class="code-live"><i></i>实时</span>
+              <button class="icon-button small" id="copyCodeBtn" type="button" title="复制 HTML 代码" aria-label="复制 HTML 代码">
+                <svg class="icon"><use href="#i-copy"/></svg>
+              </button>
+              <button class="icon-button small" id="expandCodeBtn" type="button" title="放大代码" aria-label="放大代码">
+                <svg class="icon"><use href="#i-expand"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="code-tabs" id="codeTabs" role="tablist" aria-label="切换 HTML 与 CSS 代码">
+            <button class="code-tab is-active" id="codeTabHtml" type="button" role="tab" aria-selected="true" aria-controls="codeBody" data-code-view="html" tabindex="0">
+              <span class="code-type-icon">&lt;/&gt;</span>
+              <span>HTML</span>
+              <span class="code-tab-count" id="htmlLineCount">0</span>
+            </button>
+            <button class="code-tab" id="codeTabCss" type="button" role="tab" aria-selected="false" aria-controls="codeBody" data-code-view="css" tabindex="-1">
+              <span class="code-type-icon">#</span>
+              <span>CSS</span>
+              <span class="code-tab-count" id="cssLineCount">0</span>
+            </button>
+          </div>
+          <div class="code-wrap" id="codeBody" role="tabpanel" aria-labelledby="codeTabHtml">
+            <div class="line-numbers" id="lineNumbers" aria-hidden="true">1</div>
+            <pre class="code-pre" id="codePre" tabindex="0"><code id="codeOutput"></code></pre>
+          </div>
+          <div class="code-footer">
+            <span id="codeMeta">HTML · 0 行</span>
+            <span class="auto-sync"><i></i>HTML / CSS 已分离</span>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <!-- ===================== 预览弹窗 ===================== -->
+  <div class="modal-layer" id="previewModal" aria-hidden="true">
+    <div class="modal-card preview-card" role="dialog" aria-modal="true" aria-labelledby="previewModalTitle">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">PREVIEW</span>
+          <h2 id="previewModalTitle">作品预览</h2>
+        </div>
+        <div class="preview-tools">
+          <div class="device-switch" id="deviceSwitch" aria-label="预览设备">
+            <button class="is-active" data-device="desktop" type="button" title="桌面"><svg class="icon"><use href="#i-desktop"/></svg></button>
+            <button data-device="tablet" type="button" title="平板"><svg class="icon"><use href="#i-tablet"/></svg></button>
+            <button data-device="phone" type="button" title="手机"><svg class="icon"><use href="#i-phone"/></svg></button>
+          </div>
+          <button class="icon-button" data-close-modal type="button" aria-label="关闭预览"><svg class="icon"><use href="#i-close"/></svg></button>
+        </div>
+      </div>
+      <div class="preview-stage">
+        <div class="preview-frame-wrap" id="previewFrameWrap">
+          <iframe id="previewFrame" title="网页作品预览"></iframe>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span><svg class="icon"><use href="#i-info"/></svg>预览会按设备宽度等比缩放，表单不会真正提交。</span>
+        <button class="btn btn-primary" id="previewExportBtn" type="button"><svg class="icon"><use href="#i-download"/></svg>导出这份作品</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== 导出弹窗 ===================== -->
+  <div class="modal-layer" id="exportModal" aria-hidden="true">
+    <div class="modal-card export-card" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">EXPORT</span>
+          <h2 id="exportModalTitle">导出作品</h2>
+        </div>
+        <button class="icon-button" data-close-modal type="button" aria-label="关闭导出"><svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <p class="modal-lead">HTML 与 CSS 已独立显示，可以分别下载，也可以合并成单个文件。</p>
+      <div class="export-options">
+        <button class="export-option" id="downloadHtmlBtn" type="button">
+          <span class="export-icon blue"><svg class="icon"><use href="#i-code"/></svg></span>
+          <span class="export-copy"><strong>下载 HTML 文件</strong><small>页面结构；通过 &lt;link&gt; 引用同名 CSS 文件</small></span>
+          <svg class="icon export-arrow"><use href="#i-chevron"/></svg>
+        </button>
+        <button class="export-option" id="downloadCssBtn" type="button">
+          <span class="export-icon mint"><svg class="icon"><use href="#i-color"/></svg></span>
+          <span class="export-copy"><strong>下载 CSS 文件</strong><small>全部布局、颜色与组件样式</small></span>
+          <svg class="icon export-arrow"><use href="#i-chevron"/></svg>
+        </button>
+        <button class="export-option" id="downloadSingleFileBtn" type="button">
+          <span class="export-icon sky"><svg class="icon"><use href="#i-download"/></svg></span>
+          <span class="export-copy"><strong>下载单文件 HTML</strong><small>自动合并 HTML 与 CSS，方便直接分享</small></span>
+          <svg class="icon export-arrow"><use href="#i-chevron"/></svg>
+        </button>
+        <button class="export-option" id="copyExportBtn" type="button">
+          <span class="export-icon violet"><svg class="icon"><use href="#i-copy"/></svg></span>
+          <span class="export-copy"><strong>复制当前代码</strong><small>复制代码面板正在查看的 HTML 或 CSS</small></span>
+          <svg class="icon export-arrow"><use href="#i-chevron"/></svg>
+        </button>
+      </div>
+      <div class="export-tip"><svg class="icon"><use href="#i-tip"/></svg>分开下载时，请将 HTML 与同名 CSS 文件放在同一目录。</div>
+    </div>
+  </div>
+
+  <!-- ===================== 导入 HTML ===================== -->
+  <div class="modal-layer" id="importModal" aria-hidden="true">
+    <div class="modal-card import-card" role="dialog" aria-modal="true" aria-labelledby="importModalTitle">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">IMPORT HTML</span>
+          <h2 id="importModalTitle">导入 HTML 文件</h2>
+        </div>
+        <button class="icon-button" data-close-modal type="button" aria-label="关闭导入"><svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <div class="import-body">
+        <div class="import-drop">
+          <span class="import-big-icon"><svg class="icon"><use href="#i-upload"/></svg></span>
+          <h3>选择一个单文件 HTML</h3>
+          <p>一次只能导入 <strong>1 个</strong> <code>.html</code> 文件，大小不超过 5MB。导入会替换当前画板内容，但仍可撤销。</p>
+          <button class="btn btn-primary" id="chooseImportFileBtn" type="button">
+            <svg class="icon"><use href="#i-upload"/></svg>选择 HTML 文件
+          </button>
+          <input type="file" id="importFileInput" accept=".html,.htm,text/html" hidden />
+        </div>
+        <div class="import-notes">
+          <div><span>01</span><p>文字、标题、链接、列表、表格、图片、音频和视频会转换成可编辑组件。</p></div>
+          <div><span>02</span><p>会提取文字和基础内联样式；样式表规则与脚本不会保留。</p></div>
+          <div><span>03</span><p>外部资源请使用网络地址；导入后可继续拖动、调整和添加组件。</p></div>
+        </div>
+        <div class="import-example">
+          <div>
+            <strong>第一次使用？</strong>
+            <span>下载一个简单示例，看看导入后会发生什么。</span>
+          </div>
+          <a class="btn btn-outline" href="examples/example-page.html" download="校园生活示例.html">
+            <svg class="icon"><use href="#i-download"/></svg>下载示例 HTML
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== 创作指南 ===================== -->
+  <div class="modal-layer" id="helpModal" aria-hidden="true">
+    <div class="modal-card help-card" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">QUICK GUIDE</span>
+          <h2 id="helpModalTitle">三步完成第一个网页</h2>
+        </div>
+        <button class="icon-button" data-close-modal type="button" aria-label="关闭指南"><svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <div class="help-steps">
+        <div class="help-step"><span class="step-number">01</span><div><h3>拖入组件</h3><p>在左侧选择分类，把标题、图片或表单拖到画板上的任意位置。也可以直接点击组件快速添加。</p></div></div>
+        <div class="help-step"><span class="step-number">02</span><div><h3>调整参数</h3><p>点击画板中的组件，在右上方修改文字、颜色、字号和位置。所有改动都会立即出现在作品里。</p></div></div>
+        <div class="help-step"><span class="step-number">03</span><div><h3>优化与导出</h3><p>切换到「CSS 优化」，统一配色与圆角；在右下方切换 HTML / CSS 代码，最后预览并分别导出两个文件。</p></div></div>
+      </div>
+      <div class="shortcut-bar">
+        <span><kbd>Ctrl</kbd><kbd>Z</kbd>撤销</span>
+        <span><kbd>Ctrl</kbd><kbd>D</kbd>复制</span>
+        <span><kbd>方向键</kbd>移动</span>
+        <span><kbd>Delete</kbd>删除</span>
+      </div>
+      <button class="btn btn-primary help-start" data-close-modal type="button">开始创作<svg class="icon"><use href="#i-arrow-right"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ===================== 代码放大弹窗 ===================== -->
+  <div class="modal-layer" id="codeModal" aria-hidden="true">
+    <div class="modal-card code-modal-card" role="dialog" aria-modal="true" aria-labelledby="codeModalTitle">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">SOURCE CODE</span>
+          <h2 id="codeModalTitle">HTML 代码</h2>
+        </div>
+        <div class="code-actions">
+          <button class="btn btn-outline" id="codeModalCopyBtn" type="button"><svg class="icon"><use href="#i-copy"/></svg>复制代码</button>
+          <button class="icon-button" data-close-modal type="button" aria-label="关闭代码"><svg class="icon"><use href="#i-close"/></svg></button>
+        </div>
+      </div>
+      <div class="code-modal-body">
+        <div class="line-numbers" id="modalLineNumbers" aria-hidden="true">1</div>
+        <pre class="code-pre" id="modalCodePre"><code id="modalCodeOutput"></code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <script src="assets/hero-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
